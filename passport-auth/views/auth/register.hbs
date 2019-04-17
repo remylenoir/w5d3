@@ -1,0 +1,14 @@
+<form id="form" action="/auth/register" method="post">
+    <h2>Register</h2>
+    <label for="username">Username</label>
+    <input type="text" name="username">
+    <label for="password">Password</label>
+    <input type="password" name="password">
+
+    {{#if errorMessage}}
+    <div class="error-message">{{errorMessage}}</div>
+    {{/if}}
+
+    <button type="submit">Register</button>
+</form>
+<a href="/">Home</a>
