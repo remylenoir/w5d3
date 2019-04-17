@@ -11,6 +11,8 @@ const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const GithubStrategy = require('passport-github').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('./models/user');
 const bcrypt = require('bcrypt');
 const flash = require('connect-flash');
@@ -74,6 +76,54 @@ passport.use(
         done(err);
       });
   })
+);
+
+passport.use(
+  new GithubStrategy(
+    {
+      clientID: '1c172215b3adf2880dca',
+      clientSecret: '928db0e7c9e1b48b8d4e5aecb0dc64519fb13323',
+      callbackURL: 'http://localhost:3000/auth/github/callback'
+    },
+    (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
+      User.findOne({ githubId: profile.id })
+        .then(user => {
+          if (user) return done(null, user);
+          User.create({ githubId: profile.id }).then(newUser => {
+            done(null, newUser);
+          });
+        })
+        .catch(err => {
+          done(err);
+        });
+    }
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: '199543470650397',
+      clientSecret: '2a7bb5aafa6ff9bd2717618b3a1e2e0b',
+      callbackURL: 'http://localhost:3000/auth/facebook/callback'
+    },
+    (accessToken, refreshToken, profile, done) => {
+      User.findOne({ facebookId: profile.id })
+        .then(user => {
+          if (user) return done(null, user);
+          User.create({
+            facebookId: profile.id,
+            displayName: profile.displayName
+          }).then(newUser => {
+            done(null, newUser);
+          });
+        })
+        .catch(err => {
+          done(err);
+        });
+    }
+  )
 );
 
 app.use(flash());

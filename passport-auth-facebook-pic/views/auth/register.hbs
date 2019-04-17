@@ -1,5 +1,5 @@
-<form id="form" action="/auth/login" method="post">
-    <h2>Login</h2>
+<form id="form" action="/auth/register" method="post">
+    <h2>Register</h2>
     <label for="username">Username</label>
     <input type="text" name="username">
     <label for="password">Password</label>
@@ -9,8 +9,6 @@
     <div class="error-message">{{errorMessage}}</div>
     {{/if}}
 
-    <button type="submit">Login</button>
+    <button type="submit">Register</button>
 </form>
-<a href="/auth/github">Login via github?</a>
-<a href="/auth/facebook">Login with facebook</a>
 <a href="/">Home</a>

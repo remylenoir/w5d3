@@ -5,6 +5,24 @@ const router = express.Router();
 const zxcvbn = require('zxcvbn');
 const passport = require('passport');
 
+router.get('/facebook', passport.authenticate('facebook'));
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/auth/login'
+  })
+);
+
+router.get('/github', passport.authenticate('github'));
+router.get(
+  '/github/callback',
+  passport.authenticate('github', {
+    successRedirect: '/',
+    failureRedirect: '/auth/login'
+  })
+);
+
 router.get('/register', (req, res, next) => {
   res.render('auth/register');
 });
